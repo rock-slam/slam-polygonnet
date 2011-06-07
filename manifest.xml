@@ -1,9 +1,9 @@
 <package>
   <description brief="">
-  
+    This is the triangular mesh library designed following paper "Terrainrekonstruktion aus Stereodaten von unterschiedlichen Posen (Malte Wirkus, 2010)" 
   </description>
-  <author>/</author>
-  <license></license>
+  <author>Malte Wirkus, Yuping Shi</author>
+  <license>LGPL</license>
   <url>http://</url>
   <logo>http://</logo>
  <!--
@@ -13,6 +13,9 @@
   <depend package="dummy-dependency-n-1" />
   <depend package="dummy-dependency-n" />
 -->
+  <depend package="base/types" />
+  <depend package="eigen2" />
+  <depend package="opencv" />
 <!--DEPEND-ENTRY-->
   <versioncontrol type="git" url="" />
   <export>
