@@ -19,6 +19,9 @@
 #include "anchor.h"
 #include "point.h"
 #include "fitting.h"
+#include "opencv/cv.h"
+#include "opencv/cxcore.h"
+#include "opencv/highgui.h"
 
 #define Vector3 cml::vector3d
 #define Vector4 cml::vector4d
@@ -30,6 +33,8 @@
 
 #define SERVER_ADDRESS "127.0.0.1"
 #define SERVER_PORT 50000
+
+#define HEIGHTMAPSCALE 255
 
 namespace RTM{
     class RegularTriangularMesh;
@@ -113,6 +118,7 @@ namespace RTM{
 	void mapWorldToFace(Vector4 Xw, int *k, int *l);
 	int mapModelToFaceIndex(Vector4 Xp );
 	int mapWorldToFaceIndex(Vector4 Xw );
+	void exportHeightmap(int nu, int nv);
 
 	Face *F;	//Contains all the Faces and the world points assigned to the face. Also links to the anchors supporting the face
 	QMutex F_mutex;

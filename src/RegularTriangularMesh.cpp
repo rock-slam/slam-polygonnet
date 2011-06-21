@@ -1025,3 +1025,53 @@ void RTM::RegularTriangularMesh::calculateStatistics(bool measureOnlyCurrentFitt
     this->totalAbsOError[0] = this->oErrorAbs[0]+this->fitthread->alpha*this->smoothAbs[0];
     this->totalAbsOError[1] = this->oErrorAbs[1]+(this->fitthread->alpha*this->smoothAbs[0])/this->getNA();*/
 }
+
+cml::vector3d intersectLineTriangle(cml::vector3d X, cml::vector3d dir,
+                                    cml::vector3d V0, cml::vector3d V1,
+                                    cml::vector3d V2)
+{
+    double tmp = cml::dot( cml::cross(dir,V2-V0), (V1-V0) );
+    tmp = 1.0/tmp;
+
+    double t = tmp * cml::dot( cml::cross(X-V0,V1-V0), (V2-V0) );
+    double u = tmp * cml::dot( cml::cross(dir,V2-V0), (X-V0) );
+    double v = tmp * cml::dot( cml::cross(X-V0, V1-V0), dir );
+
+    return X+t*dir;
+}
+
+void RTM::RegularTriangularMesh::exportHeightmap(int nu, int nv)
+{
+    IplImage *heightmap16 = cvCreateImage(cvSize(nu,nv), IPL_DEPTH_16U, 1);
+    double du = getLenU() / (double)nu;
+    double dv = getLenV() / (double)nv;
+    cml::vector3d udir = getU() / getLenU();
+    cml::vector3d vdir = getV() / getLenV();
+
+    double u,v;
+    int idx;
+    cml::vector3d dir(0,0,-1);
+    cml::vector3d X, X_;
+    for( int j=0; j<nv; j++)
+    {
+        v = (j*dv);
+        for( int i=0; i<nu; i++)
+        {
+            u = (i*du);
+            idx = mapModelToFaceIndex(cml::vector4d(u,v,5000,1));
+            X[0]=u; X[1]=v; X[2]=5000;
+            X_ = intersectLineTriangle( X, dir, F[idx].A_n->v_m,
+                                   F[idx].A_nPlus1->v_m,
+                                   F[idx].A_nPlus2->v_m );
+
+            cvSet2D(heightmap16,j,nu-1-i,cvScalar((int)((X_[2]/HEIGHTMAPSCALE)*65536)));
+        }
+    }
+
+    char* filename = "heightmap.jpg";
+
+    //write_png_file(fileName.toLatin1().data(),heightmap16);
+    cvSaveImage(filename,heightmap16);
+
+    cvReleaseImage(&heightmap16);
+}
