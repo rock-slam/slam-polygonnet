@@ -2,7 +2,7 @@
 
 RTM::Face::Face()
 {
-    this->X.reserve(sizeof(Point*)*100);
+    //this->X.reserve(sizeof(Point*)*100);
     this->isOdd = false;
     k=-1;
     l=-1;
@@ -19,11 +19,21 @@ RTM::Face::Face()
     this->nX = 0;
 }
 
-void RTM::Face::addPoint(Point* x)
+int RTM::Face::addPoint(Point* x, int mps)
 {
+  if(this->X.size() < mps){
     this->X.push_back(x);
     this->sum_height += x->Xm[2];
     this->nX++;
+    return 1;
+  }else{
+    Point* y = this->X.front();
+    this->X.pop_front();
+    this->sum_height -= y->Xm[2];
+    this->X.push_back(x);
+    this->sum_height += x->Xm[2];
+    return 0;
+  }
 }
 
 void RTM::Face::draw(float r, float g, float b, float a)

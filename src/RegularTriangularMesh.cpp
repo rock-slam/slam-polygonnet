@@ -32,6 +32,7 @@ RTM::RegularTriangularMesh::RegularTriangularMesh()
     this->var=0;
     this->n_occupied=0;
     this->averageAnchorHeight=0;
+    this->max_point_size_in_face=50;
 
     this->fitthread = 0;
 
@@ -621,16 +622,17 @@ int RTM::RegularTriangularMesh::addPoint( Vector3 Xw, Vector3 Xm, double c )
 
     //Add reference to face
     //if(this->F_mutex.tryLock(500))
-    {
-        F[idx].addPoint( &this->X[this->n_x] );
-        F[idx].A_n->setUpdated();
-        F[idx].A_nPlus1->setUpdated();
-        F[idx].A_nPlus2->setUpdated();
-        //this->F_mutex.unlock();
-    }
+    //{
+    int pf = F[idx].addPoint( &this->X[this->n_x],max_point_size_in_face );
+    F[idx].A_n->setUpdated();
+    F[idx].A_nPlus1->setUpdated();
+    F[idx].A_nPlus2->setUpdated();
+    //this->F_mutex.unlock();
+    //}
 
     //Increase number of current points
-    this->n_x++;
+    if(pf)
+      this->n_x++;
 
     return idx;
 }
@@ -1040,9 +1042,11 @@ cml::vector3d intersectLineTriangle(cml::vector3d X, cml::vector3d dir,
     return X+t*dir;
 }
 
-void RTM::RegularTriangularMesh::exportHeightmap(int nu, int nv)
+void RTM::RegularTriangularMesh::exportHeightmap(int nu, int nv, std::string filename)
 {
+int i = 0;
     IplImage *heightmap16 = cvCreateImage(cvSize(nu,nv), IPL_DEPTH_16U, 1);
+std::cout<<"getlenU " << len_u<<" nu "<<nu <<std::endl;
     double du = getLenU() / (double)nu;
     double dv = getLenV() / (double)nv;
     cml::vector3d udir = getU() / getLenU();
@@ -1064,14 +1068,14 @@ void RTM::RegularTriangularMesh::exportHeightmap(int nu, int nv)
                                    F[idx].A_nPlus1->v_m,
                                    F[idx].A_nPlus2->v_m );
 
-            cvSet2D(heightmap16,j,nu-1-i,cvScalar((int)((X_[2]/HEIGHTMAPSCALE)*65536)));
+            int temp = (int)((X_[2]/HEIGHTMAPSCALE)*-255);
+            cvSet2D(heightmap16,j,nu-1-i,cvScalar(temp));
+            //cvSet2D(heightmap16,j,nu-1-i,cvScalar((int)((X_[2]/HEIGHTMAPSCALE)*-255)));
         }
     }
 
-    char* filename = "heightmap.jpg";
-
     //write_png_file(fileName.toLatin1().data(),heightmap16);
-    cvSaveImage(filename,heightmap16);
+    cvSaveImage(filename.c_str(),heightmap16);
 
     cvReleaseImage(&heightmap16);
 }

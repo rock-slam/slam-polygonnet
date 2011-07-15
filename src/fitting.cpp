@@ -50,7 +50,7 @@ void Fitting::FitThread::run()
             this->mesh->calculateStatistics(true);
 
         sum_tstat += t_stat.elapsed();
-        std::clog<<"Stat calculation took (mean)"<<sum_tstat/(float)(c+1)<<std::endl;
+        //std::clog<<"Stat calculation took (mean)"<<sum_tstat/(float)(c+1)<<std::endl;
 
         t_oneLap.start();
         for(int j=0; j<this->n_v;j++)
@@ -123,6 +123,8 @@ void Fitting::FitThread::run()
             updated = false;
             //c=0;
             emit convergenceSignal();
+	    printf("Nothing to fit\n");
+	    break;
         }
         else if(!updated)   //Nothing to fit and not the first round
         {

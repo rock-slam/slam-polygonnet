@@ -4,6 +4,7 @@
 #include "RegularTriangularMesh.h"
 #include "anchor.h"
 #include "point.h"
+#include <deque>
 
 namespace RTM
 {
@@ -15,7 +16,7 @@ namespace RTM
     public:
 	Face();
 
-	void addPoint(Point* x);
+	int addPoint(Point* x,int max_point_size_in_face);
 
         Vector3 getNormal(bool updateNormal=true, bool modelCoordinates=false);
 	Vector3 getMean(bool updateMean=true);
@@ -32,7 +33,7 @@ namespace RTM
 	RTM::RegularTriangularMesh *parent_mesh;
 
 	bool isOdd;
-	std::vector <Point*> X;
+	std::deque <Point*> X;
 	int nX;
 
 	int id;

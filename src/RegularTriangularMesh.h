@@ -11,6 +11,7 @@
 #include "cml/cml.h"
 #include "dataTypes.h"
 #include <vector>
+#include <string>
 #include <QtOpenGL>
 #include <QList>
 #include <iostream>
@@ -34,7 +35,7 @@
 #define SERVER_ADDRESS "127.0.0.1"
 #define SERVER_PORT 50000
 
-#define HEIGHTMAPSCALE 255
+#define HEIGHTMAPSCALE 1 // real height in meter 
 
 namespace RTM{
     class RegularTriangularMesh;
@@ -118,7 +119,7 @@ namespace RTM{
 	void mapWorldToFace(Vector4 Xw, int *k, int *l);
 	int mapModelToFaceIndex(Vector4 Xp );
 	int mapWorldToFaceIndex(Vector4 Xw );
-	void exportHeightmap(int nu, int nv);
+	void exportHeightmap(int nu, int nv, std::string filename);
 
 	Face *F;	//Contains all the Faces and the world points assigned to the face. Also links to the anchors supporting the face
 	QMutex F_mutex;
@@ -175,6 +176,8 @@ namespace RTM{
 	double len_v; //Length of v: ||v||
 	double delta_u; //Distance between vertices along u: len_u / (n_u-1)
 	double delta_v; //Distance between vertices along v: len_v / (n_v-1)
+
+        int max_point_size_in_face; // Maximum points one facede can contain    
 
 	Anchor *A; 	//Contains all anchors of the mesh with their elevations and its corresponding faces
 	QMutex A_mutex;
