@@ -5,7 +5,7 @@ set(GSL_LIBRARY "/usr/lib/libgsl.so;/usr/lib/libgslcblas.so")
 set(GL_LIBRARY "/usr/lib/libglut.so")
 set(OPENCV_LIBRARIES "/usr/lib/libcv.so;/usr/lib/libhighgui.so;/usr/lib/libcxcore.so")
 ### Update external libraries that are available
-set(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${Boost_LIBRARIES} ${Eigen2_LIBRARIES} ${BASE_LIBRARIES} ${OPENCV_LIBRARIES} ${QT_LIBRARIES} ${GSL_LIBRARY} ${GL_LIBRARY})
+set(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${Boost_LIBRARIES} ${BASE_LIBRARIES} ${OPENCV_LIBRARIES} ${QT_LIBRARIES} ${GSL_LIBRARY} ${GL_LIBRARY})
 
 # Add your .ui files ot the following line (and uncomment it)
 #QT4_WRAP_UI(ui_cpp myproject.ui)
@@ -16,7 +16,6 @@ QT4_WRAP_CPP(moc_cpp RegularTriangularMesh.h fitting.h)
 set(SOURCES addPointsThread.cpp face.cpp point.cpp RegularTriangularMesh.cpp anchor.cpp fitting.cpp drawingRoutines.cpp)
 
 rock_library(${PROJECT_NAME} SHARED ${SOURCES} ${moc_cpp} ${ui_cpp}
-			     DEPS_CMAKE Eigen2
 			     DEPS_CMAKE OpenCV
 		 	     DEPS_PKGCONFIG base-lib)
 target_link_libraries(${PROJECT_NAME} ${EXTERNAL_LIBS})

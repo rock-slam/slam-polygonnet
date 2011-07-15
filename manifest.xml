@@ -14,7 +14,7 @@
   <depend package="dummy-dependency-n" />
 -->
   <depend package="base/types" />
-  <depend package="eigen2" />
+  <depend package="eigen3" />
   <depend package="opencv" />
 <!--DEPEND-ENTRY-->
   <versioncontrol type="git" url="" />
