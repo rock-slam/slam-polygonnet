@@ -1042,15 +1042,13 @@ cml::vector3d intersectLineTriangle(cml::vector3d X, cml::vector3d dir,
     return X+t*dir;
 }
 
-void RTM::RegularTriangularMesh::exportHeightmap(int nu, int nv, std::string filename)
+/*void RTM::RegularTriangularMesh::exportHeightmap(int nu, int nv, std::string filename)
 {
-int i = 0;
-    IplImage *heightmap16 = cvCreateImage(cvSize(nu,nv), IPL_DEPTH_16U, 1);
-std::cout<<"getlenU " << len_u<<" nu "<<nu <<std::endl;
+    IplImage *heightmap8 = cvCreateImage(cvSize(nu,nv), IPL_DEPTH_16U, 1);
     double du = getLenU() / (double)nu;
     double dv = getLenV() / (double)nv;
-    cml::vector3d udir = getU() / getLenU();
-    cml::vector3d vdir = getV() / getLenV();
+    //cml::vector3d udir = getU() / getLenU();
+    //cml::vector3d vdir = getV() / getLenV();
 
     double u,v;
     int idx;
@@ -1058,24 +1056,73 @@ std::cout<<"getlenU " << len_u<<" nu "<<nu <<std::endl;
     cml::vector3d X, X_;
     for( int j=0; j<nv; j++)
     {
-        v = (j*dv);
+        v = j*dv;
         for( int i=0; i<nu; i++)
         {
-            u = (i*du);
+            u = i*du;
             idx = mapModelToFaceIndex(cml::vector4d(u,v,5000,1));
             X[0]=u; X[1]=v; X[2]=5000;
             X_ = intersectLineTriangle( X, dir, F[idx].A_n->v_m,
                                    F[idx].A_nPlus1->v_m,
                                    F[idx].A_nPlus2->v_m );
-
-            int temp = (int)((X_[2]/HEIGHTMAPSCALE)*-255);
-            cvSet2D(heightmap16,j,nu-1-i,cvScalar(temp));
-            //cvSet2D(heightmap16,j,nu-1-i,cvScalar((int)((X_[2]/HEIGHTMAPSCALE)*-255)));
+           cvSet2D(heightmap8,j,nu-1-i,cvScalar((int)((X_[2]/HEIGHTMAPSCALE)*255)));
         }
     }
+    cvSaveImage(filename.c_str(),heightmap8);
 
-    //write_png_file(fileName.toLatin1().data(),heightmap16);
-    cvSaveImage(filename.c_str(),heightmap16);
+    cvReleaseImage(&heightmap8);
+}*/
 
-    cvReleaseImage(&heightmap16);
+
+void RTM::RegularTriangularMesh::exportHeightmap(int nu, int nv, std::string filename)
+{
+    IplImage *heightmap8 = cvCreateImage(cvSize(nu,nv), IPL_DEPTH_16U, 1);
+    double du = n_u / (double)nu;
+    double dv = n_v / (double)nv;
+
+    for (int j = 0; j < nv; j++){
+      for(int i = 0; i < nu; i++){
+        int h;
+        int index_u = floor(j*du);
+        double ru = j*du - index_u;
+        int index_v = floor(i*dv);
+        double rv = i*dv - index_v;
+        if (j*du < 0) index_u = 0;
+        if (j*du > n_u-1) {index_u = n_u -1; ru = 0;}
+        if (i*dv < 0) index_v = 0;
+        if (i*dv > n_v-1) {index_v = n_v -1; rv = 0;}
+        h =(int)  ((getAnchor(index_u,index_v)->getH()*(1-ru) + getAnchor(index_u + ceil(ru),index_v)->getH()*ru + getAnchor(index_u,index_v)->getH()*(1-rv) + getAnchor(index_u,index_v + ceil(rv))->getH()*rv )/HEIGHTMAPSCALE*255/2);
+        cvSet2D(heightmap8,i,nv -1 -j,cvScalar(h));
+      }
+    }
+    cvSaveImage(filename.c_str(),heightmap8);
+
+    cvReleaseImage(&heightmap8);
+}
+
+void RTM::RegularTriangularMesh::importHeightmap(std::string filename)
+{
+    IplImage* heightmap8 = cvLoadImage(filename.c_str());
+    if(!heightmap8) printf("Could not load image file: %s\n",filename.c_str());
+
+    double du = (double)heightmap8->width / (double)n_u;
+    double dv = (double)heightmap8->height / (double)n_v;
+    for (int j = 0; j < n_v; j++){
+      for(int i = 0; i < n_u; i++){
+        double h;
+        int index_u = floor(j*du);
+        double ru = j*du - index_u;
+        int index_v = floor(i*dv);
+        double rv = i*dv - index_v;
+        if (index_u < 0) index_u = 0;
+        if (index_u > heightmap8->width-1) index_u = heightmap8->width -1;
+        if (index_v < 0) index_v = 0;
+        if (index_v > heightmap8->height-1) index_v = heightmap8->height -1;
+        CvScalar s = cvGet2D(heightmap8, index_u, index_v);
+        CvScalar s1 = cvGet2D(heightmap8, index_u + ceil(ru), index_v); 
+        CvScalar s2 = cvGet2D(heightmap8, index_u, index_v + ceil(rv));
+        h = (s.val[0]*(1-ru) + s1.val[0]*ru + s.val[0]*(1-rv) + s2.val[0]*rv)/2*HEIGHTMAPSCALE/255;
+        setAnchorHeight( n_v - 1 -i, j, h );
+      }
+    }
 }

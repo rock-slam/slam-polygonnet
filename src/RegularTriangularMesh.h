@@ -120,6 +120,7 @@ namespace RTM{
 	int mapModelToFaceIndex(Vector4 Xp );
 	int mapWorldToFaceIndex(Vector4 Xw );
 	void exportHeightmap(int nu, int nv, std::string filename);
+	void importHeightmap(std::string filename);
 
 	Face *F;	//Contains all the Faces and the world points assigned to the face. Also links to the anchors supporting the face
 	QMutex F_mutex;
