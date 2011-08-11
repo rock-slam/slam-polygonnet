@@ -1,14 +1,14 @@
 #ifndef POINT_H
 #define POINT_H
 
-#include "cml/cml.h"
+#include "base/eigen.h"
 
 class Point
 {
 public:
     Point();
-    cml::vector3d Xw;
-    cml::vector3d Xm;
+    base::Vector3d Xw;
+    base::Vector3d Xm;
     double c;
 
     //Statistics to be calcuated in Face::calculateStatistics

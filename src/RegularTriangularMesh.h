@@ -8,14 +8,13 @@
 #ifndef TRIANGULARMESH_H_
 #define TRIANGULARMESH_H_
 
-#include "cml/cml.h"
 #include "dataTypes.h"
 #include <vector>
 #include <string>
 #include <QtOpenGL>
 #include <QList>
 #include <iostream>
-#include "drawingRoutines.h"
+//#include "drawingRoutines.h"
 #include "face.h"
 #include "anchor.h"
 #include "point.h"
@@ -23,10 +22,7 @@
 #include "opencv/cv.h"
 #include "opencv/cxcore.h"
 #include "opencv/highgui.h"
-
-#define Vector3 cml::vector3d
-#define Vector4 cml::vector4d
-#define Matrix44 cml::matrix44d_c
+#include "base/eigen.h"
 
 //#define MAX_NX 67108863 // = 4GB == 4294967296 Bytes / sizeof(Point)
 #define MAX_NX 15000000
@@ -79,8 +75,8 @@ namespace RTM{
 	int getNK();
 	int getNL();
 	int getNX();
-        inline Vector3 getU(){return u;}
-        inline Vector3 getV(){return v;}
+        inline base::Vector3d getU(){return u;}
+        inline base::Vector3d getV(){return v;}
 	Anchor* getA();
 	inline int getNA(){return nA;}
 
@@ -110,15 +106,15 @@ namespace RTM{
 	void highlightFan(int u=-1, int v=-1);
 	void highlightFace(int id=-1);
 
-	Vector4 convertWorldToModel(Vector4 Xw);
-	Vector3 convertWorldToModel(Vector3 Xw);
-	Vector4 convertModelToWorld(Vector4 Xp);
-	Vector3 convertModelToWorld(Vector3 Xp);
-
-	void mapModelToFace(Vector4 Xp, int *k, int *l);
-	void mapWorldToFace(Vector4 Xw, int *k, int *l);
-	int mapModelToFaceIndex(Vector4 Xp );
-	int mapWorldToFaceIndex(Vector4 Xw );
+	//base::Vector4d convertWorldToModel(base::Vector4d Xw);
+	base::Vector3d convertWorldToModel(base::Vector3d Xw);
+	//base::Vector4d convertModelToWorld(base::Vector4d Xp);
+	base::Vector3d convertModelToWorld(base::Vector3d Xp);
+        
+	void mapModelToFace(base::Vector3d Xp, int *k, int *l);
+	void mapWorldToFace(base::Vector3d Xw, int *k, int *l);
+	int mapModelToFaceIndex(base::Vector3d Xp );
+	int mapWorldToFaceIndex(base::Vector3d Xw );
 	void exportHeightmap(int nu, int nv, std::string filename);
 	void importHeightmap(std::string filename);
 
@@ -161,16 +157,16 @@ namespace RTM{
 	void createF();
 	void createW2MP();
 
-	int addPoint(Vector3 Xw, Vector3 Xm, double c=1.0);
+	int addPoint(base::Vector3d Xw, base::Vector3d Xm, double c=1.0);
 
-	Vector3 u; //Represents the u axis in full length
-	Vector3 v; //Represents the v axis in full length
-	Vector3 dir_u; //Direction of u: u / ||u||
-	Vector3 dir_v; //Direction of v: v / ||v||
-	Vector3 dir_h; //Direction of h: ||dir_u x dir_v||
-	Matrix44 Mp; //The Frame representing the origin of the Model-Plane
-	Vector3 O; //Represents the origin of the Model-Plane in World-Coordinates
-	Matrix44 W2MP; //The transformation matrix to convert from World Frame to Model-Plane-Frame
+	base::Vector3d u; //Represents the u axis in full length
+	base::Vector3d v; //Represents the v axis in full length
+	base::Vector3d dir_u; //Direction of u: u / ||u||
+	base::Vector3d dir_v; //Direction of v: v / ||v||
+	base::Vector3d dir_h; //Direction of h: ||dir_u x dir_v||
+	base::Matrix4d Mp; //The Frame representing the origin of the Model-Plane
+	base::Vector3d O; //Represents the origin of the Model-Plane in World-Coordinates
+	base::Matrix4d W2MP; //The transformation matrix to convert from World Frame to Model-Plane-Frame
 	int n_u; //Number of vertices along u
 	int n_v; //Number of vertices along v
 	double len_u; //Length of u: ||u||
@@ -190,8 +186,6 @@ namespace RTM{
 	//Vector3 X_m[MAX_NX];
 	double conf_X[MAX_NX];//Confidence value for each point
 	int n_x;
-
-	Vector4 tmp;
 
     public:
 	Fitting::FitThread *fitthread;

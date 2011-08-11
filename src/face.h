@@ -5,6 +5,8 @@
 #include "anchor.h"
 #include "point.h"
 #include <deque>
+#include "base/eigen.h"
+#include "base/samples/pointcloud.h"
 
 namespace RTM
 {
@@ -18,8 +20,8 @@ namespace RTM
 
 	int addPoint(Point* x,int max_point_size_in_face);
 
-        Vector3 getNormal(bool updateNormal=true, bool modelCoordinates=false);
-	Vector3 getMean(bool updateMean=true);
+        base::Vector3d getNormal(bool updateNormal=true, bool modelCoordinates=false);
+	base::Vector3d getMean(bool updateMean=true);
 	void draw(float r=1.0, float g=1.0, float b=1.0, float a=1.0);
 	void drawNormal( float len=1.0f, bool update=true );
 
@@ -59,8 +61,8 @@ namespace RTM
 	double meanC;
 
 	//Geometrischer Kram
-	Vector3 n;  //Normal on the face
-	Vector3 M;  //Mean point on the triangle
+	base::Vector3d n;  //Normal on the face
+	base::Vector3d M;  //Mean point on the triangle
     };
 }
 

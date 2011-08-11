@@ -39,7 +39,6 @@ bool RTM::AddPointsThread::appendPoints(QString filename)
     QTextStream in(&file);
     Point1 P;
     bool ok;
-    int id;
     while (!in.atEnd())
     {
         ok=true;

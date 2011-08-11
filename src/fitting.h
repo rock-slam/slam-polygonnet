@@ -71,7 +71,7 @@ namespace Fitting
     };
 
     double verySimpleFitPlane(RTM::Anchor* a, double alpha);
-    double optimalAnchorHeight(RTM::Face* f, RTM::Anchor *a, Vector3 X_m);
+    double optimalAnchorHeight(RTM::Face* f, RTM::Anchor *a, base::Vector3d X_m);
 
     void getWeights(RTM::Anchor* a, double e_res, double* alpha, double *beta);
 

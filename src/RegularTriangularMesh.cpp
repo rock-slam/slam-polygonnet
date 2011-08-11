@@ -15,11 +15,11 @@
 
 RTM::RegularTriangularMesh::RegularTriangularMesh()
 {
-    this->u = Vector3(3.2, 0.0, 0.0);
-    this->v = Vector3(0.0, 0.0, -3.2);
+    this->u = base::Vector3d(3.2, 0.0, 0.0);
+    this->v = base::Vector3d(0.0, 0.0, -3.2);
     this->n_u = 30;
     this->n_v = 30;
-    this->O = Vector3(-1.5, 0, 1.5);
+    this->O = base::Vector3d(-1.5, 0, 1.5);
     this->A = 0;
     this->F = 0;
 
@@ -125,17 +125,17 @@ void RTM::RegularTriangularMesh::update()
 
     this->basicsMutex.lock();
 
-    this->dir_u = cml::normalize(u); //Direction of u: u / ||u||
-    this->dir_v = cml::normalize(v); //Direction of v: v / ||v||
-    this->dir_h = cml::normalize(cml::cross(this->u, this->v)); //Direction of h: ||u x v||
+    this->dir_u = u.normalized(); //Direction of u: u / ||u||
+    this->dir_v = v.normalized(); //Direction of v: v / ||v||
+    this->dir_h = (this->u.cross(this->v)).normalized(); //Direction of h: ||u x v||
 
-    this->Mp.set( dir_u[0], dir_v[0], dir_h[0], O[0],
+    this->Mp << dir_u[0], dir_v[0], dir_h[0], O[0],
                   dir_u[1], dir_v[1], dir_h[1], O[1],
                   dir_u[2], dir_v[2], dir_h[2], O[2],
-                  0   ,    0    ,     0   ,   1 );
+                  0   ,    0    ,     0   ,   1 ;
 
-    this->len_u = cml::length(u); //Length of u: ||u||
-    this->len_v = cml::length(v); //Length of v: ||v||
+    this->len_u = u.norm(); //Length of u: ||u||
+    this->len_v = v.norm(); //Length of v: ||v||
 
     this->delta_u = len_u / (n_u-1); //Distance between vertices along u: len_u / (n_u-1)
     this->delta_v = len_v / (n_v-1); //Distance between vertices along v: len_v / (n_v-1)
@@ -169,7 +169,7 @@ void RTM::RegularTriangularMesh::createA()
     this->nA = this->n_u*this->n_v;
     this->A = new Anchor[this->nA];
 
-    Vector3 _p;;// = this->O; //world coordinate of current anchor
+    base::Vector3d _p;;// = this->O; //world coordinate of current anchor
 
     for(int j=0; j<this->n_v; j++)
     {
@@ -178,7 +178,7 @@ void RTM::RegularTriangularMesh::createA()
             _p = this->O + ((i*this->delta_u)*this->dir_u) + ((j*this->delta_v)*this->dir_v);
             A[_c].v0_w = _p;
             A[_c].v_w = A[_c].v0_w; //No elevations, yet, so v=v0
-            A[_c].v0_m = Vector3(i*this->delta_u,j*this->delta_v,0);
+            A[_c].v0_m = base::Vector3d(i*this->delta_u,j*this->delta_v,0);
             A[_c].v_m = A[_c].v0_m; //No elevations, yet, so v=v0
             A[_c].dir_h = &this->dir_h;
             A[_c].idx = _c;
@@ -253,7 +253,7 @@ void RTM::RegularTriangularMesh::createF()
 
 void RTM::RegularTriangularMesh::createW2MP()
 {
-    this->W2MP = cml::inverse(this->Mp);
+    this->W2MP = this->Mp.inverse();
 }
 
 /*
@@ -266,14 +266,14 @@ void RTM::RegularTriangularMesh::setU( double x, double y, double z, double len)
 {
     if(len==0)
     {
-        this->u = Vector3(x,y,z);
+        this->u = base::Vector3d(x,y,z);
         this->dir_u = u;
-        cml::normalize(dir_u);
+        dir_u.normalized();
     }
     else
     {
-        this->dir_u = Vector3(x,y,z);
-        cml::normalize(dir_u);
+        this->dir_u = base::Vector3d(x,y,z);
+        dir_u.normalized();
         this->u = dir_u*len;
     }
 }
@@ -282,14 +282,14 @@ void RTM::RegularTriangularMesh::setV( double x, double y, double z, double len)
 {
     if(len==0)
     {
-        this->v = Vector3(x,y,z);
+        this->v = base::Vector3d(x,y,z);
         this->dir_v = v;
-        cml::normalize(dir_v);
+        dir_v.normalize();
     }
     else
     {
-        this->dir_v = Vector3(x,y,z);
-        cml::normalize(dir_v);
+        this->dir_v = base::Vector3d(x,y,z);
+        dir_v.normalize();
         this->v = dir_u*len;
     }
 }
@@ -306,7 +306,7 @@ void RTM::RegularTriangularMesh::setNV( int n_v )
 
 void RTM::RegularTriangularMesh::setOrigin( double x, double y, double z )
 {
-    this->O = Vector3(x,y,z);
+    this->O = base::Vector3d(x,y,z);
 }
 
 void RTM::RegularTriangularMesh::setAnchorHeight( int i, int j, double h )
@@ -381,8 +381,8 @@ RTM::Anchor* RTM::RegularTriangularMesh::getA()
 void RTM::RegularTriangularMesh::draw(int adjustColor)
 {    
     int _lineOffset=0;
-    Vector3 _v;
-    Vector3 _n;
+    base::Vector3d _v;
+    base::Vector3d _n;
 
     //if(this->F_mutex.tryLock(500))
     {
@@ -440,10 +440,10 @@ void RTM::RegularTriangularMesh::drawNormals()
     glPopAttrib();
 }
 
-void RTM::RegularTriangularMesh::drawOrigin()
+/*void RTM::RegularTriangularMesh::drawOrigin()
 {
     drawFrame(this->Mp,3.0,3.0);
-}
+}*/
 
 void RTM::RegularTriangularMesh::drawPoints()
 {
@@ -451,7 +451,6 @@ void RTM::RegularTriangularMesh::drawPoints()
     glColor3f(1.f,0.0f,0.0f);
     glPushAttrib(GL_POINT_BIT);
     glPointSize(1);
-    float c;
 
     glBegin(GL_POINTS);
     //if(this->X_mutex.tryLock(500))
@@ -508,62 +507,46 @@ void RTM::RegularTriangularMesh::highlightFace(int id)
     glPopAttrib();
 }
 
-Vector4 RTM::RegularTriangularMesh::convertWorldToModel(Vector4 Xw)
+/*Vector4 RTM::RegularTriangularMesh::convertWorldToModel(Vector4 Xw)
+{
+    return this->W2MP*Xw;
+}*/
+
+base::Vector3d RTM::RegularTriangularMesh::convertWorldToModel(base::Vector3d Xw)
 {
     return this->W2MP*Xw;
 }
 
-Vector3 RTM::RegularTriangularMesh::convertWorldToModel(Vector3 Xw)
+/*Vector4 RTM::RegularTriangularMesh::convertModelToWorld(Vector4 Xp) //UNTESTED!!!
 {
-    Vector4 Xw4;
-    Xw4[0] = Xw[0];
-    Xw4[1] = Xw[1];
-    Xw4[2] = Xw[2];
-    Xw4[3]=1;
+    return this->Mp*Xp;
+}*/
 
-    Vector4 Xp4 = convertWorldToModel(Xw4);
-
-    return Vector3(Xp4[0],Xp4[1],Xp4[2]);
-}
-
-Vector4 RTM::RegularTriangularMesh::convertModelToWorld(Vector4 Xp) //UNTESTED!!!
+base::Vector3d RTM::RegularTriangularMesh::convertModelToWorld(base::Vector3d Xp) //UNTESTED!!!!
 {
     return this->Mp*Xp;
 }
 
-Vector3 RTM::RegularTriangularMesh::convertModelToWorld(Vector3 Xp) //UNTESTED!!!!
-{
-    Vector4 Xp4;
-    Xp4[0] = Xp[0];
-    Xp4[1] = Xp[1];
-    Xp4[2] = Xp[2];
-    Xp4[3]=1;
-
-    Vector4 Xw4 = convertModelToWorld(Xp4);
-
-    return Vector3(Xw4[0],Xw4[1],Xw4[2]);
-}
-
-void RTM::RegularTriangularMesh::mapModelToFace(Vector4 Xp, int *k, int *l)
+void RTM::RegularTriangularMesh::mapModelToFace(base::Vector3d Xp, int *k, int *l)
 {
     *k = floor(Xp.data()[0])*2 + floor( Xp.data()[0]-floor(Xp.data()[0]) + Xp.data()[2]-floor(Xp.data()[2]) );
     *l = floor(Xp.data()[2]);
 }
 
-void RTM::RegularTriangularMesh::mapWorldToFace(Vector4 Xw, int *k, int *l)
+void RTM::RegularTriangularMesh::mapWorldToFace(base::Vector3d Xw, int *k, int *l)
 {
-    Vector4 Xp = convertWorldToModel(Xw);
+    base::Vector3d Xp = convertWorldToModel(Xw);
     mapWorldToFace( Xw, k, l);
 }
 
-int RTM::RegularTriangularMesh::mapModelToFaceIndex(Vector4 Xp )
+int RTM::RegularTriangularMesh::mapModelToFaceIndex(base::Vector3d Xp )
 {
     double u = Xp[0];
     double v = Xp[1];
 
-    if(u>=this->u.length() || u<0)
+    if(u>=this->u.norm() || u<0)
         return -1;
-    if(v>=this->v.length() || v<0)
+    if(v>=this->v.norm() || v<0)
         return -1;
 
     double dk = u/this->delta_u;
@@ -584,19 +567,18 @@ int RTM::RegularTriangularMesh::mapModelToFaceIndex(Vector4 Xp )
         return idx;
 }
 
-int RTM::RegularTriangularMesh::mapWorldToFaceIndex(Vector4 Xw )
+int RTM::RegularTriangularMesh::mapWorldToFaceIndex(base::Vector3d Xw )
 {
-    Vector4 Xp = convertWorldToModel(Xw);
+    base::Vector3d Xp = convertWorldToModel(Xw);
     return mapModelToFaceIndex(Xp);
 }
 
-int RTM::RegularTriangularMesh::addPoint( Vector3 Xw, Vector3 Xm, double c )
+int RTM::RegularTriangularMesh::addPoint( base::Vector3d Xw, base::Vector3d Xm, double c )
 {
-    Vector4 Xm4 = Vector4(Xm[0],Xm[1],Xm[2],1);
     int idx=0;
 
     //Find index in F to corresponding face
-    idx = this->mapModelToFaceIndex( Xm4 );
+    idx = this->mapModelToFaceIndex( Xm );
     if( idx < 0 )
     {
         //std::cerr << "Error: world point is not located in the World-Plane" << std::endl;
@@ -639,8 +621,8 @@ int RTM::RegularTriangularMesh::addPoint( Vector3 Xw, Vector3 Xm, double c )
 
 int RTM::RegularTriangularMesh::addPointWorldCoordinates( double x, double y, double z, double c )
 {
-    Vector3 Xw = Vector3(x,y,z);
-    Vector3 Xm = convertWorldToModel(Xw);
+    base::Vector3d Xw = base::Vector3d(x,y,z);
+    base::Vector3d Xm = convertWorldToModel(Xw);
 
     return addPoint(Xw,Xm,c);
 }
@@ -651,8 +633,8 @@ int RTM::RegularTriangularMesh::addPointWorldCoordinates( double x, double y, do
  */
 int RTM::RegularTriangularMesh::addPointModelCoordinates( double x, double y, double z, double c )
 {
-    Vector3 Xm = Vector3(x,y,z);
-    Vector3 Xw = convertModelToWorld(Xm);
+    base::Vector3d Xm = base::Vector3d(x,y,z);
+    base::Vector3d Xw = convertModelToWorld(Xm);
 
     return addPoint(Xw,Xm,c);
 }
@@ -788,7 +770,7 @@ void RTM::RegularTriangularMesh::calculateDistanceErrorAtMesh(FITTING_STRATEGY F
     long double e_cur=0.0;
     double e_min=0.0;
     double e_max=0.0;
-    double ret[4];
+    //double ret[4];
 
 
     for(int i=0; i<this->n_u*this->n_v; i++)
@@ -886,7 +868,7 @@ void RTM::RegularTriangularMesh::calculateTotalErrorAtMesh(FITTING_STRATEGY FS,d
     long double e_cur=0.0;
     double e_min=0.0;
     double e_max=0.0;
-    double ret[4];
+    //double ret[4];
 
     Fitting::DistanceFunctionParams params(&A[0],alpha, true,
                                            (FS == FS_ABSOLUTE_Z_DISTANCE ||  FS == FS_ABSOLUTE_ORTHOGONAL_DISTANCE) ? true : false,
@@ -1028,7 +1010,7 @@ void RTM::RegularTriangularMesh::calculateStatistics(bool measureOnlyCurrentFitt
     this->totalAbsOError[1] = this->oErrorAbs[1]+(this->fitthread->alpha*this->smoothAbs[0])/this->getNA();*/
 }
 
-cml::vector3d intersectLineTriangle(cml::vector3d X, cml::vector3d dir,
+/*cml::vector3d intersectLineTriangle(cml::vector3d X, cml::vector3d dir,
                                     cml::vector3d V0, cml::vector3d V1,
                                     cml::vector3d V2)
 {
@@ -1040,7 +1022,7 @@ cml::vector3d intersectLineTriangle(cml::vector3d X, cml::vector3d dir,
     double v = tmp * cml::dot( cml::cross(X-V0, V1-V0), dir );
 
     return X+t*dir;
-}
+}*/
 
 /*void RTM::RegularTriangularMesh::exportHeightmap(int nu, int nv, std::string filename)
 {

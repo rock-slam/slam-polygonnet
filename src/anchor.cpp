@@ -22,13 +22,13 @@ void RTM::Anchor::setHeight( double h )
     this->v_m[2] = h;
 
     //Calculate Normal
-    this->n.set(0,0,0);
+    this->n = Eigen::Vector3d(0,0,0);
     for(size_t i=0; i<this->F.size();i++)
     {
         this->n += this->F[i]->getNormal(true);
     }
     this->n /= this->F.size();
-    cml::normalize(n);
+    n.normalized();
 
     // Set to updated.. and neighbours too
     this->setUpdated();
@@ -53,7 +53,7 @@ void RTM::Anchor::setHeight( double h )
 
 void RTM::Anchor::drawNormal( double len )
 {
-    Vector3 _n = this->v_w+(cml::normalize(this->n)*len);
+    base::Vector3d _n = this->v_w+(this->n).normalized()*len;
     glVertex3dv( this->v_w.data() );
     glVertex3dv( _n.data() );
 }

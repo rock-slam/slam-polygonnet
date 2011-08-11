@@ -61,8 +61,8 @@ void RTM::Face::draw(float r, float g, float b, float a)
 
 void RTM::Face::drawNormal(float len, bool update)
 {
-    Vector3 p;
-    Vector3 n;
+    base::Vector3d p;
+    base::Vector3d n;
 
     glBegin(GL_LINES);
     p = this->getMean(true);
@@ -76,14 +76,14 @@ void RTM::Face::drawNormal(float len, bool update)
     glEnd();
 }
 
-Vector3 RTM::Face::getNormal(bool updateNormal, bool modelCoordinates)
+base::Vector3d RTM::Face::getNormal(bool updateNormal, bool modelCoordinates)
 {
     if( updateNormal )
     {
 	if( this->isOdd )
-	    this->n = cml::normalize( cml::cross( (this->A_nPlus1->v_w-this->A_n->v_w),  (this->A_nPlus2->v_w-this->A_n->v_w) ) );
+	    this->n = (this->A_nPlus1->v_w-this->A_n->v_w).cross(this->A_nPlus2->v_w-this->A_n->v_w).normalized();
 	else
-	    this->n = cml::normalize( cml::cross( (this->A_nPlus2->v_w-this->A_n->v_w), (this->A_nPlus1->v_w-this->A_n->v_w) ) );
+	    this->n = (this->A_nPlus2->v_w-this->A_n->v_w).cross(this->A_nPlus1->v_w-this->A_n->v_w).normalized();
     }
 
     if(modelCoordinates)
@@ -92,7 +92,7 @@ Vector3 RTM::Face::getNormal(bool updateNormal, bool modelCoordinates)
         return n;
 }
 
-Vector3 RTM::Face::getMean(bool updateMean)
+base::Vector3d RTM::Face::getMean(bool updateMean)
 {
     if( updateMean )
 	this->M = (this->A_n->v_w + (this->A_nPlus1->v_w-this->A_n->v_w)/3.0) + (this->A_nPlus2->v_w-this->A_n->v_w)/3.0;

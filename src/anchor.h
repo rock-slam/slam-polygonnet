@@ -3,6 +3,7 @@
 
 #include "RegularTriangularMesh.h"
 #include "face.h"
+#include "base/eigen.h"
 
 namespace RTM
 {
@@ -14,12 +15,12 @@ namespace RTM
     public:
 	Anchor();
 
-	Vector3 v0_w;	//Vertex in the World Plane (World Coordinates)
-	Vector3 v_w;	//Vertex with elevation (World Coordinates)
-	Vector3 v0_m;	//Vertex in the World Plane (World Coordinates)
-	Vector3 v_m;	//Vertex with elevation (World Coordinates)
-	Vector3 *dir_h;	//Direction for h
-	Vector3 n; //Surface normal at anchor
+	base::Vector3d v0_w;	//Vertex in the World Plane (World Coordinates)
+	base::Vector3d v_w;	//Vertex with elevation (World Coordinates)
+	base::Vector3d v0_m;	//Vertex in the World Plane (World Coordinates)
+	base::Vector3d v_m;	//Vertex with elevation (World Coordinates)
+	base::Vector3d *dir_h;	//Direction for h
+	base::Vector3d n; //Surface normal at anchor
         std::vector<Face*> F; //Faces connected to this anchor
 
 	RTM::RegularTriangularMesh *parent_mesh;

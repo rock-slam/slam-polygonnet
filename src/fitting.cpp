@@ -203,22 +203,22 @@ void Fitting::FitThread::setStrategy(int fs)
 
 
 
-double Fitting::optimalAnchorHeight(RTM::Face* f, RTM::Anchor *a,Vector3 X_m)
+double Fitting::optimalAnchorHeight(RTM::Face* f, RTM::Anchor *a,base::Vector3d X_m)
 {
     if(f->X.size()==0)
         return a->getH();
 
-    Vector3 tmp = a->v_m;
+    base::Vector3d tmp = a->v_m;
     double Xx = tmp[0];
     double Xy = tmp[1];
     double Xz = 0;
-    Vector3 Pe = X_m;
+    base::Vector3d Pe = X_m;
     double Pex = Pe[0];
     double Pey = Pe[1];
     double Pez = Pe[2];
-    Vector3 A1;
-    Vector3 A2;
-    Vector3 n;
+    base::Vector3d A1;
+    base::Vector3d A2;
+    base::Vector3d n;
     double ret;
 
     if(a==f->A_n)
@@ -245,9 +245,9 @@ double Fitting::optimalAnchorHeight(RTM::Face* f, RTM::Anchor *a,Vector3 X_m)
     //Unter der Benutzung der Normalform wird die A0z so variiert, dass Pe in der Ebene liegt. Die hessesche Normalenform
     //bringt hier keine Vorteile, ist aber teurer
     if(f->isOdd)
-        n = /*cml::normalize*/(cml::cross( A1-Pe, A2-Pe ));
+        n = (A1-Pe).cross(A2-Pe);
     else
-        n = /*cml::normalize*/(cml::cross( A2-Pe,A1-Pe ));
+        n = (A2-Pe).cross(A1-Pe);
     double Nx = n[0];
     double Ny = n[1];
     double Nz = n[2];
@@ -271,10 +271,10 @@ double Fitting::verySimpleFitPlane(RTM::Anchor* a, double alpha)
     double sum_h=0;
     double mean_h=0;
     double h;
-    Vector3 mean_n=Vector3(0,0,0);
-    Vector3 sum_n=Vector3(0,0,0);
+    base::Vector3d mean_n=base::Vector3d(0,0,0);
+    base::Vector3d sum_n=base::Vector3d(0,0,0);
     double c=0;
-    Vector3 x;
+    base::Vector3d x;
     //double g=1.0;
     int samples[8];
     int sum_X=0;
@@ -310,7 +310,7 @@ double Fitting::verySimpleFitPlane(RTM::Anchor* a, double alpha)
     //Calculate smoothness
     double sumH;
     int nNeighbours;
-    double s = smoothnessError(a,mean_h,false,false,&sumH,&nNeighbours);
+    //double s = smoothnessError(a,mean_h,false,false,&sumH,&nNeighbours);
 
     //Calculate new height
     double newHeight = (nNeighbours*alpha*sumH+mean_h*sum_X) / (sum_X+pow(nNeighbours,2)*alpha);
@@ -523,8 +523,8 @@ double* Fitting::heightWithSmoothnessError(RTM::Anchor *a, double e_s, double al
     int v = i/n_u;
     int u = i%n_u;
     RTM::Anchor* Anchors=a->parent_mesh->getA();
-    long double sum_Dh = 0;
-    double up=0,vp=0,umvp=0,um=0,vm=0,upvm=0;
+    //long double sum_Dh = 0;
+    //double up=0,vp=0,umvp=0,um=0,vm=0,upvm=0;
     double h[2];
     int N=0;
     double Sh=0.;
@@ -537,7 +537,7 @@ double* Fitting::heightWithSmoothnessError(RTM::Anchor *a, double e_s, double al
     if(v>0) {Sh += Anchors[i-(n_u)].getH(); N++;} // v-1
     if(u<n_u-1 && v>0) {Sh += Anchors[i-(n_u)+1].getH(); N++;} // u+1, v-1
 
-    int N1 = N-1;
+    //int N1 = N-1;
 
     if(!absoluteError)
     {
@@ -588,14 +588,14 @@ double Fitting::zDistance(double h, DistanceFunctionParams* params)
     bool absoluteError = params->absolute_error;
 
     RTM::Face *f=0;
-    Vector3 a1, a2;
-    Vector3 x;
+    base::Vector3d a1, a2;
+    base::Vector3d x;
     double A0x,A0y,A0z;
     double A1x,A1y,A1z;
     double A2x,A2y,A2z;
     double g=1.0;
 
-    Vector3 a0 = a->v_m;
+    base::Vector3d a0 = a->v_m;
     A0x = a0[0]; A0y = a0[1]; A0z = h;
 
     double A,B,D;
@@ -672,15 +672,15 @@ double Fitting::diffSquaredZDistance(double h, DistanceFunctionParams* params)
     double globalError = params->globalError;
 
     RTM::Face *f=0;
-    Vector3 a1, a2;
-    Vector3 x;
+    base::Vector3d a1, a2;
+    base::Vector3d x;
     double A0x,A0y;
     double A0z=h;
     double A1x,A1y,A1z;
     double A2x,A2y,A2z;
     double g=1.0;
 
-    Vector3 a0 = a->v_m;
+    base::Vector3d a0 = a->v_m;
     A0x = a0[0]; A0y = a0[1];
 
     double dA,dB,dD,A,B,D;
@@ -757,14 +757,14 @@ double Fitting::orthogonalDistance(double h, Fitting::DistanceFunctionParams* pa
     bool absoluteError = ((DistanceFunctionParams*)params)->absolute_error;
 
     RTM::Face *f=0;
-    Vector3 a1, a2;
-    Vector3 x;
-    Vector3 n;
+    base::Vector3d a1, a2;
+    base::Vector3d x;
+    base::Vector3d n;
     double A0x,A0y,A0z;
     double A1x,A1y,A1z;
     double A2x,A2y,A2z;
 
-    Vector3 a0 = a->v_m;
+    base::Vector3d a0 = a->v_m;
     A0x = a0[0]; A0y = a0[1]; A0z = h;
 
     double nx,ny,nz;
@@ -823,9 +823,9 @@ double Fitting::orthogonalDistance(double h, Fitting::DistanceFunctionParams* pa
         nz = (A1x-A0x)*(A2y-A0y)-(A1y-A0y)*(A2x-A0x);*/
 
         if( f->isOdd )
-            n = cml::normalize( cml::cross( (f->A_nPlus1->v_m-f->A_n->v_m),  (f->A_nPlus2->v_m-f->A_n->v_m) ) );
+            n = (f->A_nPlus1->v_m-f->A_n->v_m).cross(f->A_nPlus2->v_m-f->A_n->v_m).normalized();
         else
-            n = cml::normalize( cml::cross( (f->A_nPlus2->v_m-f->A_n->v_m), (f->A_nPlus1->v_m-f->A_n->v_m) ) );
+            n = (f->A_nPlus2->v_m-f->A_n->v_m).cross(f->A_nPlus1->v_m-f->A_n->v_m).normalized();
 
 
         //double valn = sqrt(nx*nx+ny*ny+nz*nz);
