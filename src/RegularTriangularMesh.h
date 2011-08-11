@@ -34,8 +34,8 @@
 #define HEIGHTMAPSCALE 1 // real height in meter 
 
 namespace RTM{
+    typedef Eigen::Matrix<double, 4, 1, Eigen::DontAlign>     Vector4d;
     class RegularTriangularMesh;
-
 
     class AddPointsThread : public QThread
     {
@@ -106,9 +106,9 @@ namespace RTM{
 	void highlightFan(int u=-1, int v=-1);
 	void highlightFace(int id=-1);
 
-	//base::Vector4d convertWorldToModel(base::Vector4d Xw);
+	RTM::Vector4d convertWorldToModel(RTM::Vector4d Xw);
 	base::Vector3d convertWorldToModel(base::Vector3d Xw);
-	//base::Vector4d convertModelToWorld(base::Vector4d Xp);
+	RTM::Vector4d convertModelToWorld(RTM::Vector4d Xp);
 	base::Vector3d convertModelToWorld(base::Vector3d Xp);
         
 	void mapModelToFace(base::Vector3d Xp, int *k, int *l);

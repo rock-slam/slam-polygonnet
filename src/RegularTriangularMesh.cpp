@@ -507,24 +507,39 @@ void RTM::RegularTriangularMesh::highlightFace(int id)
     glPopAttrib();
 }
 
-/*Vector4 RTM::RegularTriangularMesh::convertWorldToModel(Vector4 Xw)
-{
-    return this->W2MP*Xw;
-}*/
-
-base::Vector3d RTM::RegularTriangularMesh::convertWorldToModel(base::Vector3d Xw)
+RTM::Vector4d RTM::RegularTriangularMesh::convertWorldToModel(RTM::Vector4d Xw)
 {
     return this->W2MP*Xw;
 }
 
-/*Vector4 RTM::RegularTriangularMesh::convertModelToWorld(Vector4 Xp) //UNTESTED!!!
+base::Vector3d RTM::RegularTriangularMesh::convertWorldToModel(base::Vector3d Xw)
+{
+    RTM::Vector4d Xw4;
+    Xw4[0] = Xw[0];
+    Xw4[1] = Xw[1];
+    Xw4[2] = Xw[2];
+    Xw4[3]=1;
+
+    RTM::Vector4d Xp4 = convertWorldToModel(Xw4);
+
+    return base::Vector3d(Xp4[0],Xp4[1],Xp4[2]);
+}
+
+RTM::Vector4d RTM::RegularTriangularMesh::convertModelToWorld(RTM::Vector4d Xp) //UNTESTED!!!
 {
     return this->Mp*Xp;
-}*/
+}
 
 base::Vector3d RTM::RegularTriangularMesh::convertModelToWorld(base::Vector3d Xp) //UNTESTED!!!!
 {
-    return this->Mp*Xp;
+    RTM::Vector4d Xp4;
+    Xp4[0] = Xp[0];
+    Xp4[1] = Xp[1];
+    Xp4[2] = Xp[2];
+    Xp4[3]=1;
+
+    RTM::Vector4d Xw4 = convertModelToWorld(Xp4);
+    return base::Vector3d(Xw4[0],Xw4[1],Xw4[2]);
 }
 
 void RTM::RegularTriangularMesh::mapModelToFace(base::Vector3d Xp, int *k, int *l)
