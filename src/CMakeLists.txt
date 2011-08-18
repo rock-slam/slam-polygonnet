@@ -1,9 +1,9 @@
 include_directories(${PROJECT_SOURCE_DIR}/external/include)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-set(GSL_LIBRARY "/usr/lib/libgsl.so;/usr/lib/libgslcblas.so")
-set(GL_LIBRARY "/usr/lib/libglut.so")
-set(OPENCV_LIBRARIES "/usr/lib/libcv.so;/usr/lib/libhighgui.so;/usr/lib/libcxcore.so")
+#set(GSL_LIBRARY "/usr/lib/libgsl.so;/usr/lib/libgslcblas.so")
+#set(GL_LIBRARY "/usr/lib/libglut.so")
+#set(OPENCV_LIBRARIES "/usr/lib/libcv.so;/usr/lib/libhighgui.so;/usr/lib/libcxcore.so")
 
 include(FindPkgConfig)
 pkg_check_modules(BASE "base-lib")
