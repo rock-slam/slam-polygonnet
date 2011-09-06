@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 2.6)
 include($ENV{ROCK_CMAKE_MACROS}/Rock.cmake)
 
 
-find_package(Qt4 REQUIRED QtGui QtCore QtOpenGL QtThread)
+find_package(Qt4 REQUIRED QtGui QtCore QtOpenGL)
 set(QT_USE_QTOPENGL TRUE)
 add_definitions(${QT_DEFINITIONS})
 include(${QT_USE_FILE})
