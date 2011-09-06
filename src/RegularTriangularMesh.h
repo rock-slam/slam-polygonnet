@@ -8,21 +8,21 @@
 #ifndef TRIANGULARMESH_H_
 #define TRIANGULARMESH_H_
 
-#include "dataTypes.h"
+#include <polygonnet/dataTypes.h>
 #include <vector>
 #include <string>
 #include <QtOpenGL>
 #include <QList>
 #include <iostream>
 //#include "drawingRoutines.h"
-#include "face.h"
-#include "anchor.h"
-#include "point.h"
-#include "fitting.h"
-#include "opencv/cv.h"
-#include "opencv/cxcore.h"
-#include "opencv/highgui.h"
-#include "base/eigen.h"
+#include <polygonnet/face.h>
+#include <polygonnet/anchor.h>
+#include <polygonnet/point.h>
+#include <polygonnet/fitting.h>
+#include <opencv/cv.h>
+#include <opencv/cxcore.h>
+#include <opencv/highgui.h>
+#include <base/eigen.h>
 
 //#define MAX_NX 67108863 // = 4GB == 4294967296 Bytes / sizeof(Point)
 #define MAX_NX 15000000

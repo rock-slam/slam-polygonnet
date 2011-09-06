@@ -1,7 +1,7 @@
 #ifndef FITTING_H
 #define FITTING_H
 
-#include "RegularTriangularMesh.h"
+#include <polygonnet/RegularTriangularMesh.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_min.h>

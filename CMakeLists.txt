@@ -16,7 +16,7 @@ list(APPEND CUSTOM_CFLAGS ${QT_INCLUDE_DIR}
          ${QT_QTXML_INCLUDE_DIR}
 )
 string(REGEX REPLACE ";" " -I" ADD_CFLAGS "${CUSTOM_CFLAGS}")
-set(ADD_CFLAGS "-I${ADD_CFLAGS} -I${CMAKE_INSTALL_PREFIX}/include/polygonnet")
+set(ADD_CFLAGS "-I${ADD_CFLAGS}")
 message("Add cflags: ${ADD_CFLAGS}")
 
 rock_init(polygonnet 0.1)

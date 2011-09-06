@@ -1,12 +1,12 @@
 #ifndef FACE_H
 #define FACE_H
 
-#include "RegularTriangularMesh.h"
-#include "anchor.h"
-#include "point.h"
+#include <polygonnet/RegularTriangularMesh.h>
+#include <polygonnet/anchor.h>
+#include <polygonnet/point.h>
 #include <deque>
-#include "base/eigen.h"
-#include "base/samples/pointcloud.h"
+#include <base/eigen.h>
+#include <base/samples/pointcloud.h>
 
 namespace RTM
 {

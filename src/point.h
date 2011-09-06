@@ -1,7 +1,7 @@
 #ifndef POINT_H
 #define POINT_H
 
-#include "base/eigen.h"
+#include <base/eigen.h>
 
 class Point
 {

@@ -1,9 +1,9 @@
 #ifndef ANCHOR_H
 #define ANCHOR_H
 
-#include "RegularTriangularMesh.h"
-#include "face.h"
-#include "base/eigen.h"
+#include <polygonnet/RegularTriangularMesh.h>
+#include <polygonnet/face.h>
+#include <base/eigen.h>
 
 namespace RTM
 {
