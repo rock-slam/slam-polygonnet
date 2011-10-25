@@ -3,15 +3,9 @@
     This is the triangular mesh library designed following paper "Terrainrekonstruktion aus Stereodaten von unterschiedlichen Posen (Malte Wirkus, 2010)" 
   </description>
   <author>Malte Wirkus, Yuping Shi</author>
-  <license>LGPL</license>
-  <url>http://</url>
-  <logo>http://</logo>
+  <license>LGPL v2 or later</license>
   <depend package="base/types" />
   <depend package="eigen3" />
   <depend package="opencv" />
   <depend package="qt4" />
-  <versioncontrol type="git" url="" />
-  <export>
-    <cpp cflags="" lflags="" />
-  </export>
 </package>
