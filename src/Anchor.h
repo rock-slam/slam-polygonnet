@@ -2,7 +2,7 @@
 #define ANCHOR_H
 
 #include <polygonnet/RegularTriangularMesh.h>
-#include <polygonnet/face.h>
+#include <polygonnet/Face.h>
 #include <base/eigen.h>
 
 namespace RTM

@@ -1,4 +1,4 @@
-#include "fitting.h"
+#include "Fitting.h"
 #include <fstream>
 
 Fitting::FitThread::FitThread(RTM::RegularTriangularMesh* mesh,int n_u,int n_v)

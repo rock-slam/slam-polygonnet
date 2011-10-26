@@ -12,22 +12,22 @@ set(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${Boost_LIBRARIES} ${QT_LIBRARIES})
 #QT4_WRAP_UI(ui_cpp myproject.ui)
 # Add the .h files that define QObject subclasses (that have a Q_OBJECT
 # statement)
-QT4_WRAP_CPP(moc_cpp RegularTriangularMesh.h fitting.h)
+QT4_WRAP_CPP(moc_cpp RegularTriangularMesh.h Fitting.h)
 
 set(SOURCES 
-	addPointsThread.cpp
-	face.cpp
-	point.cpp
+	AddPointsThread.cpp
+	Face.cpp
+	Point.cpp
 	RegularTriangularMesh.cpp
-	anchor.cpp
-	fitting.cpp)
+	Anchor.cpp
+	Fitting.cpp)
 
 set (HEADERS 
-	anchor.h
-	dataTypes.h
-	face.h
-	fitting.h
-	point.h
+	Anchor.h
+	DataTypes.h
+	Face.h
+	Fitting.h
+	Point.h
 	RegularTriangularMesh.h
 )
 

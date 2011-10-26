@@ -2,8 +2,8 @@
 #define FACE_H
 
 #include <polygonnet/RegularTriangularMesh.h>
-#include <polygonnet/anchor.h>
-#include <polygonnet/point.h>
+#include <polygonnet/Anchor.h>
+#include <polygonnet/Point.h>
 #include <deque>
 #include <base/eigen.h>
 #include <base/samples/pointcloud.h>

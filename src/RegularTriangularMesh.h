@@ -8,17 +8,17 @@
 #ifndef TRIANGULARMESH_H_
 #define TRIANGULARMESH_H_
 
-#include <polygonnet/dataTypes.h>
+#include <polygonnet/DataTypes.h>
 #include <vector>
 #include <string>
 #include <QtOpenGL>
 #include <QList>
 #include <iostream>
 //#include "drawingRoutines.h"
-#include <polygonnet/face.h>
-#include <polygonnet/anchor.h>
-#include <polygonnet/point.h>
-#include <polygonnet/fitting.h>
+#include <polygonnet/Face.h>
+#include <polygonnet/Anchor.h>
+#include <polygonnet/Point.h>
+#include <polygonnet/Fitting.h>
 #include <opencv/cv.h>
 #include <opencv/cxcore.h>
 #include <opencv/highgui.h>
