@@ -37,6 +37,9 @@ namespace RTM{
     typedef Eigen::Matrix<double, 4, 1, Eigen::DontAlign>     Vector4d;
     class RegularTriangularMesh;
 
+    /** 
+    * Starting this thread will throw a collection of points onto the "Mesh" that has been created. An affine transform will be applied to all the points in order to find their corresponding position and associated facade, meanwhile update the status of the facade.
+    */
     class AddPointsThread : public QThread
     {
     public:
@@ -54,6 +57,10 @@ namespace RTM{
         QTime t1;
         QTime t2;
     };
+    
+    /**
+    * Construct the Mesh within the given size (u,v,h). The shape of this mesh represent the Terrain surface that we want to reconstruct. This process can be automatically done via involking @FitThread, or in special case you can also manually set the Anchor height, mind that modification of any Anchor height has an affect to all its adjacent facades.
+    */
 
     class RegularTriangularMesh : public QObject
     {
@@ -106,6 +113,7 @@ namespace RTM{
 	void highlightFan(int u=-1, int v=-1);
 	void highlightFace(int id=-1);
 
+	// these function will convert points between world coordinate (x,y,z) and map coordinate (u,v,h)
 	RTM::Vector4d convertWorldToModel(RTM::Vector4d Xw);
 	base::Vector3d convertWorldToModel(base::Vector3d Xw);
 	RTM::Vector4d convertModelToWorld(RTM::Vector4d Xp);
@@ -115,7 +123,10 @@ namespace RTM{
 	void mapWorldToFace(base::Vector3d Xw, int *k, int *l);
 	int mapModelToFaceIndex(base::Vector3d Xp );
 	int mapWorldToFaceIndex(base::Vector3d Xw );
+	
+	// export current mesh as 8-bit grayscale heightmap
 	void exportHeightmap(int nu, int nv, std::string filename);
+	// import heightmap to mesh
 	void importHeightmap(std::string filename);
 
 	Face *F;	//Contains all the Faces and the world points assigned to the face. Also links to the anchors supporting the face

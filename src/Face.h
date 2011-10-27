@@ -35,7 +35,7 @@ namespace RTM
 	RTM::RegularTriangularMesh *parent_mesh;
 
 	bool isOdd;
-	std::deque <Point*> X;
+	std::deque <Point*> X; //points that belongs to this facade
 	int nX;
 
 	int id;

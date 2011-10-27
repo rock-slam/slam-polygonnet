@@ -7,9 +7,9 @@ class Point
 {
 public:
     Point();
-    base::Vector3d Xw;
-    base::Vector3d Xm;
-    double c;
+    base::Vector3d Xw; // points in world coordinate
+    base::Vector3d Xm; // points in map coordinate
+    double c; 
 
     //Statistics to be calcuated in Face::calculateStatistics
     float var;
@@ -22,7 +22,7 @@ public:
     double x;
     double y;
     double z;
-    double c;
+    double c; // reliability of this point, not utilized at the moment
 };
 
 #endif // POINT_H

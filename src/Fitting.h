@@ -9,9 +9,9 @@
 #include <QThread>
 #include <QList>
 
-
 namespace Fitting
 {
+    /** fitting thread will be started to match the mesh to all the points that currently stored on the mesh using certain criteria (e.g. minimum z-distance errors)*/
     class FitThread : public QThread
     {
 	Q_OBJECT

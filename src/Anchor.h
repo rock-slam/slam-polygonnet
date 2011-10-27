@@ -24,7 +24,7 @@ namespace RTM
         std::vector<Face*> F; //Faces connected to this anchor
 
 	RTM::RegularTriangularMesh *parent_mesh;
-        void setUpdated();
+        void setUpdated(); // notify that this area has been modified
         void unsetUpdated();
         bool getUpdated();
 

@@ -19,6 +19,7 @@ RTM::Face::Face()
     this->nX = 0;
 }
 
+// Update old point with new point if the amount of associated points reached it's maxima
 int RTM::Face::addPoint(Point* x, int mps)
 {
   if(this->X.size() < mps){
