@@ -315,6 +315,12 @@ void RTM::RegularTriangularMesh::setAnchorHeight( int i, int j, double h )
     this->A[_idx].setHeight(h);
 }
 
+void RTM::RegularTriangularMesh::setAnchorDHeight( int i, int j, double h )
+{
+    int _idx = j*n_u+i;
+    this->A[_idx].setDHeight(h);
+}
+
 void RTM::RegularTriangularMesh::resetAnchorHeights()
 {
     for(int i=0; i<this->n_u*n_v; i++)
@@ -1097,6 +1103,7 @@ void RTM::RegularTriangularMesh::exportHeightmap(int nu, int nv, std::string fil
     cvReleaseImage(&heightmap8);
 }
 
+//import a Heightmap to Mesh, set the value aquired from heightmap as backup
 void RTM::RegularTriangularMesh::importHeightmap(std::string filename)
 {
     IplImage* heightmap8 = cvLoadImage(filename.c_str());
@@ -1119,7 +1126,7 @@ void RTM::RegularTriangularMesh::importHeightmap(std::string filename)
         CvScalar s1 = cvGet2D(heightmap8, index_u + ceil(ru), index_v); 
         CvScalar s2 = cvGet2D(heightmap8, index_u, index_v + ceil(rv));
         h = (s.val[0]*(1-ru) + s1.val[0]*ru + s.val[0]*(1-rv) + s2.val[0]*rv)/2*HEIGHTMAPSCALE/255;
-        setAnchorHeight( n_v - 1 -i, j, h );
+        setAnchorDHeight( n_v - 1 -i, j, h );
       }
     }
 }

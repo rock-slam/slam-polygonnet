@@ -51,6 +51,12 @@ void RTM::Anchor::setHeight( double h )
         A[idx-(this->parent_mesh->getNU())+1].setUpdated();
 }
 
+void RTM::Anchor::setDHeight( double h )
+{
+  setHeight(h);
+  this->dh = h;
+}
+
 void RTM::Anchor::drawNormal( double len )
 {
     base::Vector3d _n = this->v_w+(this->n).normalized()*len;

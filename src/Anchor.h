@@ -36,6 +36,8 @@ namespace RTM
 
         void setHeight( double h );
         inline double getH(){return h;}
+        void setDHeight( double h );
+        inline double getDH(){return dh;}
 
 	void drawNormal(double len);
 	int getU();
@@ -60,6 +62,7 @@ namespace RTM
 
     private:
         double h;	//Elevation: h = ||v-v0||
+        double dh;	//backup height (used for path planner)
         bool updated;
     };
 }

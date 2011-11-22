@@ -88,6 +88,7 @@ namespace RTM{
 	inline int getNA(){return nA;}
 
 	void setAnchorHeight( int i, int j, double h );
+	void setAnchorDHeight( int i, int j, double h );
 	void resetAnchorHeights();
 
 	int addPointWorldCoordinates( double x, double y, double z, double c=1.0 );
