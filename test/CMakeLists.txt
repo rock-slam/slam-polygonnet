@@ -11,6 +11,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(SOURCES camera.cpp glwidget.cpp window.cpp tools.cpp main.cpp)
 rock_executable(test_${PROJECT_NAME}_bin ${SOURCES} ${moc_cpp} ${ui_cpp}
+                             DEPS ${PROJECT_NAME}
                              DEPS_PKGCONFIG base-lib glu QtOpenGL)
 target_link_libraries(test_${PROJECT_NAME}_bin ${EXTERNAL_LIBS} ${POLYGONNET_LIBRARIES})
 
