@@ -77,11 +77,10 @@ void window::on_pbAddPoint_clicked()
 
 void window::on_pbLoadPointCloud_clicked()
 {
-    /*QString fileName = QFileDialog::getOpenFileName(this,
+    QString fileName = QFileDialog::getOpenFileName(this,
 						    tr("Open Point Cloud"),
-						    "/home/likewise-open/DFKI/shi/workspace/rimres/image_processing/visual_odometry/build/test/",
-	//					    "/home/likewise-open/DFKI/shi/Desktop/editcop/",
-						    tr("Point Clouds (*.txt *.3d)"));
+						    "./",
+						    tr("Point Clouds (*.txt *.3d *.ply)"));
     
     if(fileName.isEmpty() || fileName.isNull())
 	return;
@@ -97,9 +96,9 @@ void window::on_pbLoadPointCloud_clicked()
     //Draw
     updateGL();
     it_o=0;
-    it_z=0;*/
+    it_z=0;
 
-  char buf[100];
+  /*char buf[100];
   for(int img = 2; img < 6000; img +=5)
   {
     sprintf(buf, "/home/likewise-open/DFKI/shi/workspace/rimres/image_processing/visual_odometry/build/test/scan%4.4d.3d", img);
@@ -117,7 +116,7 @@ void window::on_pbLoadPointCloud_clicked()
     this->ui.wGLWidget->mesh->addPointCloud(fileName);
     updateGL();
     sleep(3);
-  }
+  }*/
 }
 
 void window::on_pbImportHM_clicked()
