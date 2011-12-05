@@ -45,17 +45,12 @@ bool RTM::AddPointsThread::appendPoints(QString filename)
         QString line = in.readLine();
         QStringList l = line.split(' ');
         P.x = l.at(0).toDouble(&ok);
-        if(!ok)
-            continue;
         P.y = l.at(1).toDouble(&ok);
-        if(!ok)
-            continue;
         P.z = l.at(2).toDouble(&ok);
-        if(!ok)
-            continue;
-        P.c = l.at(3).toDouble(&ok);
-        if(!ok)
-            continue;
+        if(l.size() > 3)
+          P.c = l.at(3).toDouble(&ok);
+        else
+          P.c = 1;
 
         pointsToAdd.append(P);
     }
