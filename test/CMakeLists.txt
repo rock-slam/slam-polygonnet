@@ -1,7 +1,5 @@
 include(FindPkgConfig)
 
-pkg_check_modules(POLYGONNET "polygonnet")
-
 qt4_wrap_ui(ui_cpp Design.ui)
 qt4_wrap_cpp(moc_cpp window.h glwidget.h)
 
