@@ -8,5 +8,6 @@
   <depend package="eigen3" />
   <depend package="opencv" />
   <depend package="qt4" />
+  <depend package="qt4-opengl" />
   <depend package="gsl" />
 </package>
