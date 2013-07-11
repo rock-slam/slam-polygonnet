@@ -34,7 +34,7 @@ set (HEADERS
 rock_library(${PROJECT_NAME} SOURCES ${SOURCES} ${moc_cpp} ${ui_cpp}
                              HEADERS ${HEADERS}
 			     DEPS_CMAKE OpenCV
-		 	     DEPS_PKGCONFIG base-lib gsl gl opencv)
+		 	     DEPS_PKGCONFIG base-lib gsl gl opencv libpng12)
 target_link_libraries(${PROJECT_NAME} ${EXTERNAL_LIBS})
 
 #rock_executable(test_bin main.cpp DEPS test)
